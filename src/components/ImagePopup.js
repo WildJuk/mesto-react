@@ -4,7 +4,7 @@ export default function ImagePopup({card, onClose}) {
             <div className="popup__container popup__container_type_image">
             <button type="button" aria-label="Закрыть попап" className="popup__close" onClick={onClose} />
             <figure className="popup__image-group">
-                <img src={card ? card.link : ''} alt={card ? card.name : ''} className="popup__image" />
+                <img src={card?.link} alt={card?.name} className="popup__image" />
                 <figcaption className="popup__caption">{card ? card.name : ''}</figcaption>
             </figure>
             </div>

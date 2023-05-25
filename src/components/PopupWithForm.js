@@ -19,7 +19,12 @@ export default function PopupWithForm({
                     onSubmit={onSubmit}
                 >
                     {children}
-                    <button type="submit" className="popup__submit-button">{submitButtonText}</button>
+                    <button
+                        type="submit"
+                        className="popup__submit-button"
+                    >
+                        {submitButtonText}
+                    </button>
                 </form>
             </div>
         </div>

@@ -1,55 +1,17 @@
-import React, { useState, useEffect } from "react";
-import { api } from "../utils/Api";
+import React from "react";
 import Card from "./Card";
 import { CurrentUserContext } from "../contexts/CurrentUserContext";
 
 export default function Main({
+    cards,
     onEditProfile,
     onAddPlace,
     onEditAvatar,
     onCardClick,
+    onCardLike,
+    onCardDelete
 }) {
     const currentUser = React.useContext(CurrentUserContext);
-    const [cards, setCards] = useState([]);
-
-    useEffect(() => {
-        api.getInitialCards()
-            .then(cardData => {
-                setCards(cardData);
-            })
-            .catch(error => {
-                console.log(`Ошибка загрузки данных: ${error}`)
-            })
-    }, []);
-
-    function handleCardLike(card) {
-        const isLiked = card.likes.some(item => item._id === currentUser._id);
-
-        api.changeLikeState(card._id, isLiked)
-            .then(newCard => {
-                setCards(prevState =>
-                    prevState.map(prevCard =>
-                        prevCard._id === card._id ? newCard : prevCard
-                    )
-                );
-            })
-            .catch(error => {
-                console.log(`Ошибка клика по лайку: ${error}`)
-            });
-    };
-
-    function handleCardDelete(deletedCardId) {
-        api.deleteCard(deletedCardId)
-            .then(() => {
-                setCards(prevState =>
-                    prevState.filter(card => card._id !== deletedCardId)
-                )
-            })
-            .catch(err =>
-                console.log(`Ошибка удаления карточки: ${err}`)
-            )
-    };
-
     return (
         <main className="content">
             <section className="profile">
@@ -85,8 +47,8 @@ export default function Main({
                             onCardClick={onCardClick}
                             key={card._id}
                             card={card}
-                            onCardLike={handleCardLike}
-                            onCardDelete={handleCardDelete}
+                            onCardLike={onCardLike}
+                            onCardDelete={onCardDelete}
                         />
                     ))}
                 </ul>

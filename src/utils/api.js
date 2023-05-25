@@ -29,6 +29,10 @@ class Api {
             })
     }
 
+    getStartAppData() {
+        return Promise.all([this.getUresInfo(), this.getInitialCards()])
+    }
+
     setUserInfo(userData) {
         return fetch(`${this._baseUrl}/users/me`, {
             method: 'PATCH',

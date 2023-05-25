@@ -15,11 +15,11 @@ export default function EditProfilePopup({
 
     function handleNameChange(event) {
         setName(event.target.value);
-    }
+    };
 
     function handleDescriptionChange(event) {
         setDescription(event.target.value);
-    }
+    };
 
     useEffect(() => {
         setName(currentUser.name);

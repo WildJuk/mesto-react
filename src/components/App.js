@@ -90,39 +90,33 @@ function App() {
     api.setUserInfo(newUserData)
       .then((userData) => {
         setCurrentUser(userData);
+        closeAllPopups();
       })
       .catch(err =>
         console.log(`Ошибка загрузки обновления информации о пользователе: ${err}`)
       )
-      .finally(() => {
-        closeAllPopups();
-      })
   };
 
   function handleUpdateAvatar(newUserAvatar) {
     api.setUserAvatar(newUserAvatar)
       .then((userData) => {
         setCurrentUser(userData);
+        closeAllPopups();
       })
       .catch(err =>
         console.log(`Ошибка загрузки обновления аватара пользователя: ${err}`)
       )
-      .finally(() => {
-        closeAllPopups();
-      })
   };
 
   function handleAddPlaceSubmit(newPlace) {
     api.addNewCard(newPlace)
       .then((newCard) => {
-        setCards(prevState => [newCard, ...prevState])
+        setCards(prevState => [newCard, ...prevState]);
+        closeAllPopups();
       })
       .catch(err =>
         console.log(`Ошибка загрузки новой карточки: ${err}`)
       )
-      .finally(() => {
-        closeAllPopups();
-      })
   };
 
   return (

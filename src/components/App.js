@@ -8,7 +8,17 @@ import PopupWithForm from './PopupWithForm';
 import AddPlacePopup from './AddPlacePopup';
 import ImagePopup from './ImagePopup';
 import { api } from '../utils/api';
+import { FormValidator } from './FormValidator';
 import { CurrentUserContext } from '../contexts/CurrentUserContext';
+
+const config = {
+  formSelector: '.popup__form',
+  inputSelector: '.popup__input',
+  submitButtonSelector: '.popup__submit-button',
+  inactiveButtonClass: 'popup__submit-button_disabled',
+  inputErrorClass: 'popup__input_type_error',
+  errorClass: 'popup__input-error_active'
+};
 
 function App() {
   const [isEditProfilePopupOpen, setIsEditProfilePopupOpen] = useState(false);
@@ -16,13 +26,12 @@ function App() {
   const [isEditAvatarPopupOpen, setIsEditAvatarPopupOpen] = useState(false);
   const [selectedCard, setSelectedCard] = useState(null);
   const [currentUser, setCurrentUser] = useState({
-    _id: '',
-    avatar: '',
     name: '',
     about: '',
-    cohort: ''
+    avatar: ''
   });
   const [cards, setCards] = useState([]);
+  const [formValidators, setFormValidators] = useState({});
 
   useEffect(() => {
     api.getStartAppData()
@@ -33,6 +42,20 @@ function App() {
       .catch(err =>
         console.log(`Ошибка загрузки данных о пользоателе: ${err}`)
       )
+
+      const formList = Array.from(document.querySelectorAll(config.formSelector));
+      formList.forEach((formElement) => {
+        const validator = new FormValidator(config, formElement);
+        const formName = formElement.getAttribute('name');
+        setFormValidators((prevState) => {
+          return {
+            ...prevState,
+            [formName]: validator
+          }
+        })
+        validator.enableValidation();
+      });
+      console.log(formValidators)
   }, []);
 
   function closeAllPopups() {
@@ -43,14 +66,17 @@ function App() {
   };
 
   function handleEditAvatarClick() {
+    formValidators['avatar-edit'].disableSubmitButton();
     setIsEditAvatarPopupOpen(true);
   };
 
   function handleEditProfileClick() {
+    formValidators['profile-edit'].disableSubmitButton();
     setIsEditProfilePopupOpen(true);
   };
 
   function handleAddPlaceClick() {
+    formValidators['add-card'].disableSubmitButton();
     setIsAddPlacePopupOpen(true);
   };
 
